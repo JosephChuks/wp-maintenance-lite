@@ -1,6 +1,6 @@
 # WordPress Maintenance Mode Lite
 
-![WordPress Maintenance Mode Lite](https://your-plugin-image-url.jpg)
+![WordPress Maintenance Mode Lite](screenshots/plugin-image.png)
 
 **Enables an easy Maintenance mode for WordPress websites.**
 
