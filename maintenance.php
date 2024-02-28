@@ -5,7 +5,7 @@
  * Plugin Name: WP Maintenance Lite
  * Plugin URI:  https://github.com/JosephChuks/wp-maintenance-lite
  * Description: Enable a simple and lightweight Maintenance mode for WordPress. This plugin comes with Language Translator
- * Version:     1.0
+ * Version:     1.0.1
  * Author:      Joseph Chuks
  * Author URI:  https://github.com/JosephChuks
  * License:     GPLv2 or later
@@ -44,13 +44,11 @@ function wp_maintenance_lite_settings_page()
         }
 
     if (isset($_POST['wp_maintenance_lite_save'])) {
-        // Save settings when the form is submitted
         update_option('wp_maintenance_lite_title_class', wp_kses_post($_POST['title_class']));
         update_option('wp_maintenance_lite_contents_class', wp_kses_post($_POST['contents_class']));
         echo '<div class="updated"><p>Settings saved.</p></div>';
         }
 
-    // Retrieve user-defined HTML content or use defaults
     $title_class = get_option('wp_maintenance_lite_title_class', wp_maintenance_lite_TITLE_CLASS);
     $contents_class = get_option('wp_maintenance_lite_contents_class', wp_maintenance_lite_CONTENTS_CLASS);
     ?>
@@ -65,9 +63,8 @@ function wp_maintenance_lite_settings_page()
 
             <label for="contents_class" style="font-size:16px;font-weight:bold;margin-bottom:20px">Contents:</label>
             <?php
-            // Use WordPress editor for the contents
             $content_editor_id = 'contents_class';
-            $content = stripslashes($contents_class); // Remove extra slashes
+            $content = stripslashes($contents_class);
             wp_editor($content, $content_editor_id, array('textarea_name' => 'contents_class'));
             ?>
 
@@ -89,19 +86,20 @@ function wp_maintenance_lite_deactivate()
     delete_option('wp_maintenance_lite_contents_class');
     }
 
+
 function wp_maintenance_lite_mode()
     {
-    if (! current_user_can('manage_options') && ! is_admin()) {
-        // Retrieve user-defined HTML content or use defaults
+    $requested_url = $_SERVER['REQUEST_URI'];
+
+    $login_page = site_url('wp-login.php');
+    if (! current_user_can('manage_options') && ! is_admin() && $requested_url !== $login_page) {
         $title_class = get_option('wp_maintenance_lite_title_class', wp_maintenance_lite_TITLE_CLASS);
         $contents_class = get_option('wp_maintenance_lite_contents_class', wp_maintenance_lite_CONTENTS_CLASS);
 
-        wp_enqueue_style('wp-maintenance-lite-css', plugin_dir_url(__FILE__) . 'css/style.css');
-
-        // Include the HTML template
         include(plugin_dir_path(__FILE__) . 'template.php');
         exit();
         }
     }
 add_action('init', 'wp_maintenance_lite_mode');
+
 ?>
