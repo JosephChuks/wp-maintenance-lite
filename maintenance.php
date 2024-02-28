@@ -5,7 +5,7 @@
  * Plugin Name: WP Maintenance Lite
  * Plugin URI:  https://github.com/JosephChuks/wp-maintenance-lite
  * Description: Enable a simple and lightweight Maintenance mode for WordPress. This plugin comes with Language Translator
- * Version:     1.0.1
+ * Version:     1.0
  * Author:      Joseph Chuks
  * Author URI:  https://github.com/JosephChuks
  * License:     GPLv2 or later
@@ -88,18 +88,17 @@ function wp_maintenance_lite_deactivate()
 
 
 function wp_maintenance_lite_mode()
-    {
-    $requested_url = $_SERVER['REQUEST_URI'];
-
-    $login_page = site_url('wp-login.php');
-    if (! current_user_can('manage_options') && ! is_admin() && $requested_url !== $login_page) {
+{
+    $login_page = "wp-login.php";
+    if (!current_user_can('manage_options') && !is_admin() && strpos($_SERVER['REQUEST_URI'], $login_page) === false) {
         $title_class = get_option('wp_maintenance_lite_title_class', wp_maintenance_lite_TITLE_CLASS);
         $contents_class = get_option('wp_maintenance_lite_contents_class', wp_maintenance_lite_CONTENTS_CLASS);
 
+
         include(plugin_dir_path(__FILE__) . 'template.php');
         exit();
-        }
     }
+}
 add_action('init', 'wp_maintenance_lite_mode');
 
 ?>
