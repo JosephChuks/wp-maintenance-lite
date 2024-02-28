@@ -51,6 +51,3 @@ For support and inquiries, please [open an issue](https://github.com/JosephChuks
 GitHub.
 
 ---
-
-**Author:** Your Name
-**GitHub:** [JosephChuks](https://github.com/JosephChuks)
